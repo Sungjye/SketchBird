@@ -1,0 +1,54 @@
+{
+    "gameInfo": {
+        "id": "10",
+        "createdUserId": "1585475026",
+        "creatorIdx": 2,
+        "currentTurn": 2,
+        "maximumTurn": 6,
+        "gameType": 0,
+        "keywordLanguage": "ko",
+        "keyword": "잠꾸러기",
+        "keywordIdx": 4,
+        "category": null,
+        "progress": 0,
+        "createdTime": "2021-08-23T16:25:10.257752"
+    },
+    "finishedUsers": [
+        {
+            "id": "1585475026",
+            "userIdx": 2,
+            "nickname": "유재성",
+            "gender": "남성",
+            "ageRange": "30대",
+            "pushToken": "d8UPjPW1aEjWl8lLcGc0h3:APA91bFrXlcW2Ej0-erYPWD8BYmRaRzIVQxrxIK7MgN5SIUcrJV5BoLIvgKfPl4MTxCOrH_9tFC5SAuIzlOiTZxaqAY51Mv7KYmOQHVzHLjlAgMwYm2nm0HMaTB8rkX6R3y_4wtaPcBr",
+            "country": "수지",
+            "userLanguage": "ko",
+            "turnNum": 1,
+            "type": "draw",
+            "imgUrl": "https://sjtest0204-upload.s3.ap-northeast-2.amazonaws.com/1629703477358_1602104431_1629702355337.png",
+            "tossTimestamp": "2021-08-23T16:06:02.271882",
+            "startTimestamp": null,
+            "finishTimestamp": "2021-08-23T16:24:43.386351"
+        }
+    ],
+    "nextUser": {
+        "id": "1602104431",
+        "nickname": "조성제대표님",
+        "gender": null,
+        "ageRange": null,
+        "pushToken": null,
+        "country": null,
+        "userLanguage": null,
+        "turnNum": 2,
+        "type": "word",
+        "imgUrl": null,
+        "tossTimestamp": null,
+        "startTimestamp": null,
+        "finishTimestamp": null
+    },
+    "sys": {
+        "createdTimestamp": "2021-08-23T16:25:10.257752",
+        "endTimestamp": null
+    },
+    "timezone": -25200
+}

@@ -1,0 +1,54 @@
+{
+    "gameInfo": {
+        "id": "29",
+        "createdUserId": "1602104431",
+        "creatorIdx": 1,
+        "currentTurn": 2,
+        "maximumTurn": 7,
+        "gameType": 0,
+        "keywordLanguage": "ko",
+        "keyword": "잠꾸러기",
+        "keywordIdx": 4,
+        "category": null,
+        "progress": 0,
+        "createdTime": "2021-08-23T16:25:10.257752"
+    },
+    "finishedUsers": [
+        {
+            "id": "1602104431",
+            "userIdx": 1,
+            "nickname": "조맨",
+            "gender": "남성",
+            "ageRange": "40대",
+            "pushToken": "cgSCgopVRe2k2ncNPEkOPD:APA91bFvOL93oC83Cap1LOLQ3js-WsmdHR7un90JNqqxQnexyRpM_PwtMLlBsQHPsVWfb4FDNCZvIbzbU8uv1lMi18TpqngbiQlLHXlAOTXLeDdWBU6v8orUC-ovGmV8zNb4X6Z-aQ7j",
+            "country": "양평",
+            "userLanguage": "ko",
+            "turnNum": 1,
+            "type": "draw",
+            "imgUrl": "https://sjtest0204-upload.s3.ap-northeast-2.amazonaws.com/1629703477358_1602104431_1629702355337.png",
+            "tossTimestamp": "2021-08-23T16:06:02.271882",
+            "startTimestamp": null,
+            "finishTimestamp": "2021-08-23T16:24:43.386351"
+        }
+    ],
+    "nextUser": {
+        "id": "1585475026",
+        "nickname": "유털털",
+        "gender": null,
+        "ageRange": null,
+        "pushToken": null,
+        "country": null,
+        "userLanguage": null,
+        "turnNum": 2,
+        "type": "word",
+        "imgUrl": null,
+        "tossTimestamp": null,
+        "startTimestamp": null,
+        "finishTimestamp": null
+    },
+    "sys": {
+        "createdTimestamp": "2021-08-23T16:25:10.257752",
+        "endTimestamp": null
+    },
+    "timezone": -25200
+}

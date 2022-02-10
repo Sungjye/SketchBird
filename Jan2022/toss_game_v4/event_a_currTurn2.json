@@ -1,0 +1,58 @@
+{
+    "gameInfo": {
+      "id": 338,
+      "createdUserId": "1602104431",
+      "creatorIdx": 1,
+      "currentTurn": 2,
+      "maximumTurn": 6,
+      "gameType": 0,
+      "keywordLanguage": "ko",
+      "keyword": "체스",
+      "keywordIdx": 7,
+      "category": null,
+      "progress": 1,
+      "funScore": null,
+      "goldHandScore": null,
+      "reportedCount": null,
+      "createdTime": "2022-01-04T07:38:55.000Z"
+    },
+    "finishedUsers": [
+      {
+        "id": "1602104431",
+        "userIdx": 1,
+        "nickname": "조맨",
+        "gender": 0,
+        "ageRange": 50,
+        "pushToken": "el05wgT4Sy6Prl_OzLVTJK:APA91bFq7oUqU4j2USasCWu11HIhga9pm1webfqw74AHTf4gjyu70O8OLyr_TKpOg0qrA51jJ9Bp7o1AOpu6UvYxvgRmTMmBhkvFAhqZa8HMgvVL96RaxwaDQVF7Y2oMC3dOMYTW04oh",
+        "country": "ko",
+        "userLanguage": "ko",
+        "turnNum": 1,
+        "type": "draw",
+        "imgUrl": "https://sjtest0204-upload.s3.ap-northeast-2.amazonaws.com/1641281944666_338.png",
+        "tossTimestamp": "2022-01-04T07:38:55.000Z",
+        "startTimestamp": null,
+        "finishTimestamp": "2022-01-04T07:39:08.000Z"
+      }
+    ],
+    "nextUser": {
+      "id": "1747127830",
+      "userIdx": 16,
+      "nickname": "조테스트폰1",
+      "gender": 0,
+      "ageRange": 10,
+      "pushToken": "fsTLcA2qSYihwLNBPnHHbi:APA91bHHimmex2qWh30WM0tencctUkXLPhT3Z0gT17IUF7dsec9A58X2ntk8MDj9CQ0-muXZ3AlDN5J0LVrxlH2HW8tAZOKJgickZmz1CFKDEj43Ivre22sIZhguhphpj-WR3jcCvYl_",
+      "country": "경기도",
+      "userLanguage": "ko",
+      "turnNum": 2,
+      "type": "word",
+      "imgUrl": null,
+      "tossTimestamp": "2022-01-04T07:39:08.000Z",
+      "startTimestamp": null,
+      "finishTimestamp": null
+    },
+    "sys": {
+      "createdTimestamp": "2022-01-04T07:38:55.000Z",
+      "endTimestamp": null
+    },
+    "timezone": -25200
+  }

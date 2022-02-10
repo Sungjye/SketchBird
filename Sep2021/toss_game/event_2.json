@@ -1,0 +1,51 @@
+{
+    "gameInfo": {
+        "id": "10",
+        "createdUserId": "1585475026",
+        "creatorIdx": 2,
+        "currentTurn": 2,
+        "maximumTurn": 6,
+        "gameType": 0,
+        "keyword": "배드민턴",
+        "keywordIdx": 12,
+        "category": null,
+        "progress": 0,
+        "createdTime": "Mon Aug 23 2021 07:05:55 GMT+0000 (Coordinated Universal Time)"
+    },
+    "finishedUsers": [
+        {
+            "id": "1585475026",
+            "userIdx": 2,
+            "nickname": "유재성",
+            "gender": 0,
+            "ageRange": "30대",
+            "pushToken": "d8UPjPW1aEjWl8lLcGc0h3:APA91bFrXlcW2Ej0-erYPWD8BYmRaRzIVQxrxIK7MgN5SIUcrJV5BoLIvgKfPl4MTxCOrH_9tFC5SAuIzlOiTZxaqAY51Mv7KYmOQHVzHLjlAgMwYm2nm0HMaTB8rkX6R3y_4wtaPcBr",
+            "country": "수지",
+            "turnNum": 1,
+            "type": "draw",
+            "imgUrl": "https://sjtest0204-upload.s3.ap-northeast-2.amazonaws.com/1629703477358_1602104431_1629702355337.png",
+            "tossTimestamp": "2021-08-23T16:06:02.271882",
+            "startTimestamp": null,
+            "finishTimestamp": "2021-08-23T16:24:43.386351"
+        }
+    ],
+    "nextUser": {
+        "id": "1602104431",
+        "nickname": "조성제대표님",
+        "gender": null,
+        "ageRange": null,
+        "pushToken": null,
+        "country": null,
+        "turnNum": 2,
+        "type": "word",
+        "imgUrl": null,
+        "tossTimestamp": "2021-08-23T16:25:10.257752",
+        "startTimestamp": null,
+        "finishTimestamp": null
+    },
+    "sys": {
+        "createdTimestamp": "Mon Aug 23 2021 07:05:55 GMT+0000 (Coordinated Universal Time)",
+        "endTimestamp": "2021-08-23T16:25:17.224874"
+    },
+    "timezone": -25200
+}

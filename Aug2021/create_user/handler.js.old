@@ -1,0 +1,353 @@
+//-------------------------------------------------------------------------------------
+// Project: SketchBird
+// DB: mysql.
+// 
+// 사용자의 데이터를 새롭게 생성하는 람다
+//
+// 
+// 2021.07.28. sjjo. 새롭게 rds로.. 힘내자!
+// 2021.08.09. sjjo. 인서트 하기전에, 기존에 존재하는지 먼저 확인. UserUid와 OriginSNS로만 일단.
+// 2021.08.12. sjjo. JS와 협의해서, 다음과 같이 수정. 
+//                   기존 사용자가 있으면(UserUid 와 OriginSNS로 확인), 
+//                   사용자 정보 리턴, 없으면 insert 하고 UserIdx 리턴. 사용자가 로그인 할 때 사용. 
+//
+//-------------------------------------------------------------------------------------
+
+
+'use strict';
+
+const mysql = require('mysql');
+
+
+const table_name = 'UserTable';
+
+// 2021.08.09
+function queryThisFromTheTable(query_string) {
+  return new Promise((resolve, reject) => {
+    // Mysql
+    const mysql_connection = mysql.createConnection({
+    host: 'sketchbird-01.c8wfnhiunwfj.ap-northeast-2.rds.amazonaws.com',
+    port: 3306,
+    user: 'sketchbirddb',
+    password: 'coglix!!..',
+    database: 'sketchbird'
+    });
+
+    mysql_connection.connect();
+
+    //var strQueryString = 'SELECT subject FROM posts ORDER BY RAND() LIMIT ' + nNumOfRandomWords.toString();
+    //'select id, hit from posts where subject="aaa"'
+    // 'select * from posts'
+    mysql_connection.query(query_string, function(err, result, field) {
+        if(result)
+          resolve(result);
+        
+        if(err)
+          console.log("[CreateUser] [ERROR]: db-error:",err);
+    });
+    mysql_connection.end();
+  });
+}
+
+/*
+CREATE TABLE `UserTable` (
+  `UserIdx` int unsigned NOT NULL AUTO_INCREMENT,
+  `UserUid` varchar(45) NOT NULL,
+  `FcmToken` tinytext NOT NULL,
+  `NickName` varchar(45) NOT NULL,
+  `AgeRange` int DEFAULT NULL,
+  `Region` varchar(45) DEFAULT NULL,
+  `AccepJorugi` tinyint NOT NULL,
+  `AcceptRandom` tinyint NOT NULL,
+  `IsBlockedUser` tinyint NOT NULL,
+  `FunUserScore` int DEFAULT NULL,
+  `GoldHandScore` int DEFAULT NULL,
+  `UserLevel` int DEFAULT NULL,
+  `OriginSNS` varchar(45) DEFAULT NULL,
+  `SignedUpTime` datetime DEFAULT NULL,
+  `Reporting` int DEFAULT NULL,
+  `Reported` int DEFAULT NULL,
+  `AgreeTerms` tinyint DEFAULT NULL,
+  `UseSound` tinyint DEFAULT NULL,
+  `UserLevelScore` int DEFAULT NULL,
+  PRIMARY KEY (`UserIdx`),
+  KEY `UserUid` (`UserUid`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+*/
+
+
+
+
+function insertUserToDB(event) {
+  return new Promise( (resolve, reject) => {
+    const mysql_connection = mysql.createConnection({
+      host: 'sketchbird-01.c8wfnhiunwfj.ap-northeast-2.rds.amazonaws.com',
+      port: 3306,
+      user: 'sketchbirddb',
+      password: 'coglix!!..',
+      database: 'sketchbird'      
+    });
+
+    mysql_connection.connect();
+
+    //var strQueryString = 'SELECT subject FROM posts ORDER BY RAND() LIMIT ' + nNumOfRandomWords.toString();
+    var strQueryString = 'INSERT INTO ' + table_name 
+                                        +'(' 
+                                        + 'UserUid'
+                                        + ', FcmToken'
+                                        + ', NickName'
+                                        + ', AgeRange'
+                                        + ', Region'
+                                        + ', AccepJorugi'
+                                        + ', AcceptRandom'
+                                        + ', IsBlockedUser'
+                                        + ', FunUserScore'
+                                        + ', GoldHandScore'
+                                        + ', UserLevel'
+                                        + ', OriginSNS'
+                                        + ', SignedUpTime'
+                                        + ', Reporting'
+                                        + ', Reported'
+                                        + ', AgreeTerms'
+                                        + ', UseSound'
+                                        + ', UserLevelScore'
+                                        + ') '
+
+                                        +'VALUES (' 
+                                        +        '\'' + event.UserUid + '\''
+                                        + ', \'' + event.FcmToken + '\''
+                                        + ', \'' + event.NickName + '\''
+                                        + ', ' + event.AgeRange
+                                        + ', \'' + event.Region + '\''
+                                        + ', ' + event.AccepJorugi
+                                        + ', ' + event.AcceptRandom
+                                        + ', ' + event.IsBlockedUser
+                                        + ', ' + event.FunUserScore
+                                        + ', ' + event.GoldHandScore
+                                        + ', ' + event.UserLevel
+                                        + ', \'' + event.OriginSNS + '\''
+                                        + ', Now()' /*event.SignedUpTime. Use MySQL function.*/
+                                        + ', ' + event.Reporting
+                                        + ', ' + event.Reported
+                                        + ', ' + event.AgreeTerms
+                                        + ', ' + event.UseSound
+                                        + ', ' + event.UserLevelScore
+                                        + ');'
+                                        ;
+    
+    //var strGetLastAutoInclId = 'SELECT LAST_INSERT_ID();';
+
+    //strQueryString = strQueryString + "\n\r" + strGetLastAutoInclId;
+
+    
+    mysql_connection.query( strQueryString, function(err, result, field) {
+      if(result){
+        resolve(result);
+      } 
+
+      if(err){
+        console.log("[CreateUser] [ERROR]: db-error", err);
+        reject(err);
+      } 
+    });
+
+    mysql_connection.end();
+
+  });
+}
+
+
+// 표준 response 를 보내기 위해. 
+const sendRes = (status, body) => {
+  var response = {
+      statusCode: status,
+      headers: {
+          "Content-Type" : "application/json",
+          "Access-Control-Allow-Headers" : "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+          "Access-Control-Allow-Methods" : "OPTIONS,POST,PUT",
+          "Access-Control-Allow-Credentials" : true,
+          "Access-Control-Allow-Origin" : "*",
+          "X-Requested-With" : "*"
+      },
+      body: body
+  };
+  return response;
+};
+
+
+module.exports.CreateUser = async (event) => {
+
+    /* 함수와 프로시져에서만 된다고 하고. MS SQL과 또 다르니..
+    // 다른 response(200, 201) 를 주기위해서라도 예전 코드로 다시.. 
+    // 한번 호출로 해결하기 위해. 
+    try{
+
+      var strQueryString 
+                = 'IF ( SELECT UserIdx FROM ' + table_name + ' '
+                                  + 'WHERE UserUid=' + '\'' + event.UserUid + '\' ' 
+                          + ') '
+                    + 'THEN '
+                            +'SELECT * FROM ' + table_name + ' '
+                                  + 'WHERE UserUid=' + '\'' + event.UserUid + '\' ' 
+
+                    + 'ELSE '
+                            +'INSERT INTO ' + table_name 
+                            +'(' 
+                            + 'UserUid'
+                            + ', FcmToken'
+                            + ', NickName'
+                            + ', AgeRange'
+                            + ', Region'
+                            + ', AccepJorugi'
+                            + ', AcceptRandom'
+                            + ', IsBlockedUser'
+                            + ', FunUserScore'
+                            + ', GoldHandScore'
+                            + ', UserLevel'
+                            + ', OriginSNS'
+                            + ', SignedUpTime'
+                            + ', Reporting'
+                            + ', Reported'
+                            + ', AgreeTerms'
+                            + ', UseSound'
+                            + ', UserLevelScore'
+                            + ') '
+
+                            +'VALUES (' 
+                            +        '\'' + event.UserUid + '\''
+                            + ', \'' + event.FcmToken + '\''
+                            + ', \'' + event.NickName + '\''
+                            + ', ' + event.AgeRange
+                            + ', \'' + event.Region + '\''
+                            + ', ' + event.AccepJorugi
+                            + ', ' + event.AcceptRandom
+                            + ', ' + event.IsBlockedUser
+                            + ', ' + event.FunUserScore
+                            + ', ' + event.GoldHandScore
+                            + ', ' + event.UserLevel
+                            + ', \'' + event.OriginSNS + '\''
+                            + ', Now()' 
+                            + ', ' + event.Reporting
+                            + ', ' + event.Reported
+                            + ', ' + event.AgreeTerms
+                            + ', ' + event.UseSound
+                            + ', ' + event.UserLevelScore
+                            + ') '
+                    + 'END IF '
+                      ;
+
+      //console.log(strQueryString);
+
+      const mysqlResult = await queryThisFromTheTable(strQueryString);
+
+      console.log("[CreateUser] [OK] User inserting or retrieved the existing user.");
+
+      return sendRes(200, JSON.stringify(mysqlResult[0]) );
+
+
+
+    }catch(error){
+
+      console.log("[CreateUser] [Error][DB access Failed]: " + " > " + error);
+      return sendRes(400, error);
+
+    }
+  */
+    
+    try{
+
+      var strQueryString = 'SELECT UserIdx FROM ' + table_name + ' ' 
+                                + 'WHERE UserUid=' + '\'' + event.UserUid + '\' ' + 'AND '
+                                      + 'OriginSNS=' + '\'' + event.OriginSNS + '\' '; // 스트링이라 '를 넣어줘야 쿼리됨! 
+      //var strExistQueryString = 'SELECT EXISTS (' + strQueryString + ') AS isExist;';
+      var strExistQueryString = 'SELECT EXISTS (' + strQueryString + ');';
+  
+      const mysqlResult = await queryThisFromTheTable(strExistQueryString);
+  
+      //const checkResult = mysqlResult[0].isExist;
+      //console.log(strExistQueryString)
+      //console.log(checkResult);
+      return sendRes(201, JSON.stringify(mysqlResult[0]) );
+      
+      /*
+      if( checkResult ) // 기존에 있다면!
+      {
+        //기존에 이 사용자 있다고 에러만 띄우는 처리. 
+        var strErrMsg = "[CreateUser] [Error][INSERT Failed]:  " + " > " 
+                  + "UserUid is already exists! UserUid: " + event.UserUid 
+                  + ", OriginSNS: " + event.OriginSNS;
+        
+        return sendRes(410, JSON.stringify(mysqlResult[0]) );
+  
+      }else ; // 없으면 계속 진행.
+      */
+  
+    }catch(error){
+      
+      console.log("[CreateUser] [Error][DB row exist checking is Failed]:  " + " > " + error);
+      return sendRes(420, error);
+  
+    }
+  
+
+
+  /* 기존코드를, 2번 쿼리하더라도.. 쓰자. 다른 response 보내기 위해서. 
+  //-------------------------------------------------------------------------
+  // STEP 1. 기존에 이 사용자의 정보가 존재하는지 확인!
+  try{
+
+    var strQueryString = 'SELECT UserIdx FROM ' + table_name + ' ' 
+                              + 'WHERE UserUid=' + '\'' + event.UserUid + '\' ' + 'AND '
+                                    + 'OriginSNS=' + '\'' + event.OriginSNS + '\' '; // 스트링이라 '를 넣어줘야 쿼리됨! 
+    var strExistQueryString = 'SELECT EXISTS (' + strQueryString + ') AS isExist;';
+
+    const mysqlResult = await queryThisFromTheTable(strExistQueryString);
+
+    const checkResult = mysqlResult[0].isExist;
+    //console.log(strExistQueryString)
+    //console.log(checkResult);
+
+    if( checkResult ) // 기존에 있다면!
+    {
+      //기존에 이 사용자 있다고 에러만 띄우는 처리. 
+      var strErrMsg = "[CreateUser] [Error][INSERT Failed]:  " + " > " 
+                + "UserUid is already exists! UserUid: " + event.UserUid 
+                + ", OriginSNS: " + event.OriginSNS;
+      
+      return sendRes(410, JSON.stringify(strErrMsg) );
+
+    }else ; // 없으면 계속 진행.
+
+  }catch(error){
+    
+    console.log("[CreateUser] [Error][DB row exist checking is Failed]:  " + " > " + error);
+    return sendRes(420, error);
+
+  }
+
+
+  //-------------------------------------------------------------------------
+  // STEP 2. 없는 사용자라면, 신규 사용자로 인서트 하기! 
+  
+  try{
+
+
+    const mysqlResult = await insertUserToDB(event);
+
+    var strMsg = "[CreateUser] New User is Inserted!"; 
+    console.log(strMsg);
+
+    return sendRes(200, JSON.stringify(strMsg) );
+  
+
+  }catch(error){
+
+    console.log("[CreateUser] [Error][DB access Failed]: " + " > " + error);
+    return sendRes(400, error);
+
+  }
+  */
+
+  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
+  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
+};
