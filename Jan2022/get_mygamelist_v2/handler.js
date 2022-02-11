@@ -14,6 +14,7 @@
 //
 // 2022.01.06. sjjo. 턴넘버 쿼리문 일부 수정 by JY.
 // 
+// 2022.02.11. sjjo. 우여곡절 끝에, unseenTable 정보를 같이 레프트조인 쿼리해서 보내기 성공. 감사합니다!
 //
 //-------------------------------------------------------------------------------------
 // References.
@@ -324,6 +325,7 @@ module.exports.GetMyGameListV2 = async (event) => {
   */
   // 여기서 그림 주소는, 자신이 참여해서 그렸던 그것이 표시되는 것. 
   // 내가 참여한 목록 보는 것이니, 내가 한 그림/글 장면 보는 것이 맞는 것 같다~ 다른 사람이 한 것은 들어가야 보이는 것이 호기심 들게 함~
+  /* 2022.02.11
   query_MyGameList = 'SELECT H.gameIdx, G.createdTime, G.endTime, G.turnCount, L.lang, L.localizedKeyword, R.checkedFun, R.checkedGoldhand, R.checkedReport, S.funScore, S.goldHandScore, P.imageUrl'
   + ' ' + 'FROM GameHistoryTable AS H'
         + ' ' + 'INNER JOIN GameTable AS G ON G.gameIdx = H.gameIdx'
@@ -339,6 +341,49 @@ module.exports.GetMyGameListV2 = async (event) => {
                     + ' ' + 'ORDER BY G.endTime DESC'
                     + ' ' + 'LIMIT ' + intReqNumOfGames
   + ';';
+  */
+  
+  /*
+# 찾기, 생각. https://codingdog.tistory.com/entry/mysql-left-join-%EC%99%BC%EC%AA%BD-%EB%A6%B4%EB%A0%88%EC%9D%B4%EC%85%98%EC%9D%84-%EB%B3%B4%EC%A1%B4%ED%95%9C%EB%8B%A4
+# 끝난 게임을 보기. + 언씬 테이블 쿼리.
+# 감사합니다!!! 2022.02.11 마음의 어려움의 인도해 주시고 해결해 주시고 실무 문제 까지 해결해 주셔서 감사합니다!
+SELECT H.gameIdx, U.createdTime AS unseenTimestamp, G.createdTime, G.endTime, G.turnCount, L.lang, L.localizedKeyword, R.checkedFun, R.checkedGoldhand, R.checkedReport, S.funScore, S.goldHandScore, P.imageUrl 
+		FROM GameHistoryTable AS H 
+			LEFT JOIN UnseenTable AS U ON ((H.gameIdx = U.gameIdx) AND (H.userIdx = U.userIdx)) 
+			INNER JOIN GameTable AS G ON G.gameIdx = H.gameIdx 
+            INNER JOIN GameProgressTable AS P ON H.progressIdx = P.progressIdx 
+            INNER JOIN ScoreCountTable AS S ON S.gameIdx = G.gameIdx 
+            INNER JOIN RatingStatusTable AS R ON R.gameIdx = G.gameIdx 
+            INNER JOIN LocalizedKeywordTable AS L ON G.keywordIdx = L.keywordIdx 
+                WHERE G.status=2 
+                    AND H.userIdx=15 
+                    AND R.userIdx=15 
+                    AND G.keywordLanguage=L.lang 
+                    AND G.endTime<'2022-01-08 23:51:59' ORDER BY G.endTime 
+                    DESC LIMIT 15;
+  */
+  // 2022.02.10. 언씬 테이블정보도 추가. 앱에서 new 달기위해. 쿼리문 feat. JY.
+  // [원래 커멘트]
+  // 여기서 그림 주소는, 자신이 참여해서 그렸던 그것이 표시되는 것. 
+  // 내가 참여한 목록 보는 것이니, 내가 한 그림/글 장면 보는 것이 맞는 것 같다~ 다른 사람이 한 것은 들어가야 보이는 것이 호기심 들게 함~
+  // 열람하지 않은 게임이면 unseenTimestamp가 있고, 열람 완료한 게임이면 unseenTimestamp가 null 이다. 
+  query_MyGameList = 'SELECT H.gameIdx, U.createdTime AS unseenTimestamp, G.createdTime, G.endTime, G.turnCount, L.lang, L.localizedKeyword, R.checkedFun, R.checkedGoldhand, R.checkedReport, S.funScore, S.goldHandScore, P.imageUrl'
+  + ' ' + 'FROM GameHistoryTable AS H'
+        + ' ' + 'LEFT JOIN UnseenTable AS U ON ((H.gameIdx = U.gameIdx) AND (H.userIdx = U.userIdx))'
+        + ' ' + 'INNER JOIN GameTable AS G ON G.gameIdx = H.gameIdx'
+        + ' ' + 'INNER JOIN GameProgressTable AS P ON H.progressIdx = P.progressIdx'
+        + ' ' + 'INNER JOIN ScoreCountTable AS S ON S.gameIdx = G.gameIdx'
+        + ' ' + 'INNER JOIN RatingStatusTable AS R ON R.gameIdx = G.gameIdx'
+        + ' ' + 'INNER JOIN LocalizedKeywordTable AS L ON G.keywordIdx = L.keywordIdx'
+              + ' ' + 'WHERE G.status=' + intStatus
+                    + ' ' + 'AND H.userIdx=' + intUserIdx
+                    + ' ' + 'AND R.userIdx=' + intUserIdx
+                    + ' ' + 'AND G.keywordLanguage=L.lang'
+                    + ' ' + 'AND G.endTime<' +'\'' + reqTimeStamp +'\''
+                    + ' ' + 'ORDER BY G.endTime DESC'
+                    + ' ' + 'LIMIT ' + intReqNumOfGames
+  + ';';
+
 
   //console.log(query_MyGameList);
     
